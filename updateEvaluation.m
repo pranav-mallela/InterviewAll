@@ -1,10 +1,10 @@
 
-function updateEvaluation(name,status)
+function updateEvaluation(name,uniqueid, round, status)
     conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
-
-    query = "UPDATE Candidates SET Status = " + '"' + status +'"' +" WHERE Name = "+'"' + name + '"' + ';';
+   
+    query = "UPDATE Candidates SET " + round + " = " + '"' + status + " + '"' +" WHERE Name = " + '"' + name + '"' + " AND ID = " + '"' + uniqueid + '"' + ';';
     
-    execute(conn,query);
+    exec(conn,query);
     close(conn)
     clear conn query
 end 

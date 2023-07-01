@@ -20,7 +20,7 @@ function updateStatus (name,status)
 
     query = "UPDATE Interviewer"+dept+" SET Status = " + '"' + status + '"' +" WHERE Name = " + '"' + name + '"' +';';
     
-    execute(conn,query);
+    exec(conn,query);
     close(conn)
     clear conn query
 end 
