@@ -2,7 +2,7 @@
 function data = addReview (id, review, status)
     conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
 
-    query = 'UPDATE Reviews SET Status = ' + status +'Review =' + review + 'WHERE StudentID = ' + id + ';';
+    query = "UPDATE Reviews SET Status = " + '"' + status + '"' + "Review =" + '"' + review + '"' + "WHERE StudentID = " + '"' + id + '"' + ';';
     
     data = fetch(conn,query);
     close(conn)
