@@ -5,7 +5,7 @@ function addAdmin (name,email)
     
     query = "INSERT INTO admin (name, email) VALUES (" +  '"'+name+'"' + ', ' + '"'+ email+'"' + ");";
     
-    sqlwrite(conn,query);
+    execute(conn,query);
     close(conn)
     clear conn query
 end 

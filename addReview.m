@@ -4,7 +4,7 @@ function addReview (id, review, status)
 
     query = "UPDATE Reviews SET Status = " + '"' + status + '"' + "Review =" + '"' + review + '"' + "WHERE StudentID = " + '"' + id + '"' + ';';
     
-    sqlupdate(conn,query);
+    execute(conn,query);
     close(conn)
     clear conn query
 end 

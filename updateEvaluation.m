@@ -4,7 +4,7 @@ function updateEvaluation(name,status)
 
     query = "UPDATE Candidates SET Status = " + '"' + status +'"' +" WHERE Name = "+'"' + name + '"' + ';';
     
-    sqlupdate(conn,query);
+    execute(conn,query);
     close(conn)
     clear conn query
 end 
