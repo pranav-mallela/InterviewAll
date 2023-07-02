@@ -33,6 +33,18 @@ function err = updateStatus (name,status)
     catch
         err = 1;
     end 
+    
+    active = "No";
+    if(Status == "Idle")
+        active = "Yes";
+    end 
+
+    try
+        query = "UPDATE FreeInterviewer" + dept + "SET Active = " + '"' + active + '"' + ';';
+        exec(conn, query)
+    catch 
+        err = 1;
+    end
 
     close(conn)
     clear conn query
