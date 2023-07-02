@@ -4,7 +4,7 @@ function err = addDate(date)
     err = 0;
 
     try 
-        query = "UPDATE Credentials SET Password = " + '"' + date + '"' + " WHERE Username = " + '"' + Date + '"' + ';';
+        query = "UPDATE Credentials SET Password = " + '"' + date + '"' + " WHERE Username = " + '"' + "Date" + '"' + ';';
         exec(conn,query);
     catch
         err = 1;
