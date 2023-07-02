@@ -5,15 +5,15 @@ function addReview (id, iName, review, status)
     query = "SELECT * FROM InterviewerHR WHERE Name = " + '"' + iName + '"' + ';';
     data = fetch(conn,query);
 
-    round = "Round3";
+    round = "HR";
 
     if(isempty(data))
          query = "SELECT * FROM InterviewerTECH WHERE Name = " + '"' + iName + '"' + ';';
          data = fetch(conn,query);
-         round = "Round1";
+         round = "TECH";
 
          if(isempty(data))
-            round = "Round2";
+            round = "MG";
          end 
     end
 
