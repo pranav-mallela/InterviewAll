@@ -4,6 +4,7 @@ function err = getFreeInterviewers(name, date) %yyyy-mm-dd
     calendars = namespace.GetDefaultFolder(9); 
    
     items = calendars.Items;
+    data = [];
     
     filteredItems = items.Restrict(['[Start] >= ''' date ' 00:00 AM''' ' AND [End] <= ''' date ' 11:59 PM''']);
     
