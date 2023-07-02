@@ -8,7 +8,7 @@ function err = signup (name, department, domain, mailid, password)
         query = "INSERT INTO Interviewer" + department + " (Name, Department, Domain, Email, Status) VALUES (" +  '"'+name+'"' + ', ' + '"'+ department+'"' + ', ' + '"'+ domain+'"' + ', ' + '"'+ mailid+'"'+ ', ' + '"'+ defaultStatus+'"' + ");";
         exec(conn,query);
     
-        query = "INSERT INTO Credentials VALUES (" + '"' + name + '"' + ',' + '"' + hashedPassword + '"' + ';';
+        query = "INSERT INTO Credentials VALUES (" + '"' + name + '"' + ',' + '"' + hashedPassword + '")' + ';';
         exec(conn,query)
     catch
         err = 1;
