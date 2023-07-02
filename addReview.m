@@ -45,7 +45,7 @@ function err = addReview (id, iName, review, status)
     end 
     
     try
-        query = "UPDATE Candidates SET " + '"' + candidateRound + '"' + ' = ' +  '"' + round + '"' + " WHERE ID = " + '"' + id + '"' + ';';
+        query = "UPDATE Candidates SET " + '"' + candidateRound + '"' + ' = ' +  '"' + round + '"' + "Status = " + '"' + status + '"' + " WHERE ID = " + '"' + id + '"' + ';';
         exec(conn, query)
     catch 
         err = 1;
