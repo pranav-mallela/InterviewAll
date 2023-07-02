@@ -17,7 +17,7 @@ function addReview (id, iName, review, status)
          end 
     end
 
-    query = "INSERT INTO Reviews (StudentID, Round,InterviewerName, Review, Status) VALUES (" +  '"'+id+'"' + ', ' + '"'+ Round+'"' + ', ' + '"'+ iName+'"' + ', ' + '"'+ review+'"' + '"'+ status+'"' + ");";
+    query = "INSERT INTO Reviews (StudentID, Round,InterviewerName, Review, Status) VALUES (" +  '"'+id+'"' + ', ' + '"'+ round+'"' + ', ' + '"'+ iName+'"' + ', ' + '"'+ review+'"' + '"'+ status+'"' + ");";
     
     exec(conn,query);
     close(conn)
