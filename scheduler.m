@@ -2,7 +2,8 @@
 
 function scheduler()
     conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
-
+    query = 'SELECT Password FROM Credentials WHERE Username=="Date";';
+    date = fetch(conn,query);
     query = 'SELECT * FROM Candidates WHERE Round1=="Not Completed";';
     a = fetch(conn,query);
     query = 'SELECT * FROM Candidates WHERE Round1<>"Not Completed" and Round2=="Not Completed";';
@@ -10,6 +11,8 @@ function scheduler()
     query = 'SELECT * FROM Candidates WHERE Round1<>"Not Completed" and Round2<>"Not Completed" and Round3=="Not Completed";';
     c = fetch(conn,query);
     Candidates=[a;b;c];
+    date=date.Password;
+    %class(date)
     
         % FLAG: also check if the starting time is greater than starting time of
         % interviewer.
@@ -50,10 +53,11 @@ function scheduler()
                 if(Candidates.Round1(i) ~= "TECH" && Candidates.Round2(i) ~= "TECH" && Candidates.Round3(i) ~= "TECH")
                     for interviewer = 1:size(iTech)
                         interviewerName = iTech.InterviewerName(interviewer);
-                        interviewerDetails = interviewerDetail(interviewerName, "TECH");
+                        [~,interviewerDetails] = interviewerDetail(interviewerName, "TECH");
                         if Candidates.Domain(i) == interviewerDetails.Domain(1)
                             roundNo = findRound(Candidates(i,:));
                             scheduleInterview(interviewerName,iTech.StartingTime(interviewer),iTech.EndingTime(interviewer),Candidates.ID(i),roundNo);
+                            [~] = makeAppointmentAndSendMail(Candidates.ID(i),interviewerName,date,iTech.StartingTime(interviewer),iTech.EndingTime(interviewer));
                             popFreeInterviewer(interviewerName,iTech.StartingTime(interviewer),iTech.Department(interviewer));
                             iTech(interviewer,:)=[];
                             break;
@@ -68,6 +72,7 @@ function scheduler()
                     interviewerName = iHR.InterviewerName(1);
                     roundNo = findRound(Candidates(i,:));
                     scheduleInterview(interviewerName,iHR.StartingTime(interviewer),iHR.EndingTime(interviewer),Candidates.ID(i),roundNo);
+                    makeAppointmentAndSendMail(Candidates.ID(i),interviewerName,date,iHR.StartingTime(interviewer),iHR.EndingTime(interviewer));
                     popFreeInterviewer(interviewerName,iHR.StartingTime(interviewer),iHR.Department(interviewer));
                     iHR(interviewer,:)=[];
                 end
@@ -76,6 +81,7 @@ function scheduler()
                     interviewerName = iMG.InterviewerName(1);
                     roundNo = findRound(Candidates(i,:));
                     scheduleInterview(interviewerName,iMG.StartingTime(interviewer),iMG.EndingTime(interviewer),Candidates.ID(i),roundNo);
+                    makeAppointmentAndSendMail(Candidates.ID(i),interviewerName,date,iMG.StartingTime(interviewer),iMG.EndingTime(interviewer));
                     popFreeInterviewer(interviewerName,iMG.StartingTime(interviewer),iMG.Department(interviewer));
                     iMG(interviewer,:)=[];
                 end
