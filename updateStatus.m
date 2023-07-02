@@ -1,6 +1,7 @@
 
 function err = updateStatus (name,status)
     err = 0;
+    data = [];
     try
         conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
         
