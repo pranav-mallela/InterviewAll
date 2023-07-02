@@ -36,6 +36,7 @@ function err = getFreeInterviewers(name, date) %yyyy-mm-dd
          end 
     end
 
+    int_startTime = 9000;
 
     for i = 1 : filteredItems.Count
         meeting = filteredItems.Item(i);
@@ -54,18 +55,37 @@ function err = getFreeInterviewers(name, date) %yyyy-mm-dd
         he = "";
         he = he + temp(1);
         he = he + temp(2);
-        disp(he)
 
         endTime = he;
-         
-        try 
-            query = "INSERT INTO FreeInterviewer" + dept + " VALUES (" +  '"'+name+'"' + ', ' + '"'+ startTime+'"' + ', ' + '"'+ endTime+'"' + ', ' + '"'+ dept+'"' + ");";
-            
-            exec(conn, query)
-        catch 
-            err = 1;
-        end 
+
+        freeSlots = [];
         
+        if(int_startTime < startTime)
+            if(int_endTime <= 1800)
+                temp = endTime;
+                while(temp - int_startTime >= 1000) 
+                    
+                    freeSlots = [freeSlots, [int_startTime, int_startTime + 1000]]
+                    int_startTime = int_startTime + 1000;
+                end 
+            end
+        end
+                
+        
+        for j = 1 : length(freeSlots)
+            [st, en] = freeSlots(j);
+
+                try 
+                    query = "INSERT INTO FreeInterviewer" + dept + " VALUES (" +  '"'+name+'"' + ', ' + '"'+ st+'"' + ', ' + '"'+ en+'"' + ', ' + '"'+ dept+'"' + ");";
+                    
+                    exec(conn, query)
+                catch 
+                        err = 1;
+                end 
+        end
+
+        int_startTime = endTime;
+
     end
     
     close(conn)
