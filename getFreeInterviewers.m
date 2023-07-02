@@ -5,9 +5,9 @@ function err = getFreeInterviewers(name, date) %yyyy-mm-dd
    
     items = calendars.Items;
     data = [];
-    
+    date = convertStringsToChars(date);
     filteredItems = items.Restrict(['[Start] >= ''' date ' 00:00 AM''' ' AND [End] <= ''' date ' 11:59 PM''']);
-    
+
     try
         conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
         
@@ -60,9 +60,10 @@ function err = getFreeInterviewers(name, date) %yyyy-mm-dd
         endTime = he;
 
         freeSlots = [];
-        
+        startTime = str2double(startTime);
+        endTime = str2double(endTime);
         if(int_startTime < startTime)
-            if(int_endTime <= 1800)
+            if(endTime <= 1800)
                 temp = endTime;
                 while(temp - int_startTime >= 100) 
                     
@@ -72,9 +73,10 @@ function err = getFreeInterviewers(name, date) %yyyy-mm-dd
             end
         end
                 
-        
-        for j = 1 : length(freeSlots)
-            [st, en] = freeSlots(j);
+        disp(size(freeSlots))
+        for j = 1 : 2 : size(freeSlots)
+            st  = freeSlots(j);
+            en = freeSlots(j+1);
 
                 try 
                     query = "INSERT INTO FreeInterviewer" + dept + " VALUES (" +  '"'+name+'"' + ', ' + '"'+ st+'"' + ', ' + '"'+ en+'"' + ', ' + '"'+ dept+'"' + ");";
