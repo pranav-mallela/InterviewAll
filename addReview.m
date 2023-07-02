@@ -52,7 +52,7 @@ function err = addReview (id, iName, review, status)
     end 
 
     try 
-        query = "DELETE FROM ScheduledInterviews WHERE Interviewer = " + '"' + iName + '"' + " AND StudentID = " + '"' + id + '"' + ';';
+        query = "DELETE FROM ScheduledInterviews WHERE InterviewerName = " + '"' + iName + '"' + " AND StudentID = " + '"' + id + '"' + ';';
         exec(conn,query)
 
         updateStatus(iName, "Idle")
