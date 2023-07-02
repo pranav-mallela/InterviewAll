@@ -30,6 +30,26 @@ function err = addReview (id, iName, review, status)
     catch 
         err = 1;
     end 
+
+    query = "SELECT * FROM Candidates WHERE ID = " + '"' + id + '"' + ';';
+    data = fetch(conn, query);
+
+    candidateRound = "Round1";
+
+    if(data.Round1 == "Not Completed")
+        candidateRound = "Round1";
+    elseif(data.Round2 == "Not Completed")
+        candidateRound = "Round2";
+    else 
+        candidateRound = "Round3";
+    end 
+    
+    try
+        query = "UPDATE Candidates SET " + '"' + candidateRound + '"' + ' = ' +  '"' + round + '"' + " WHERE ID = " + '"' + id + '"' + ';';
+        exec(conn, query)
+    catch 
+        err = 1;
+    end 
     
     try 
         query = "DELETE FROM ScheduledInterviews WHERE Interviewer = " + '"' + iName + '"' + " AND StudentID = " + '"' + id + '"' + ';';
