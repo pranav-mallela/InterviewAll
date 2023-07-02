@@ -2,7 +2,7 @@ function n = login (name,email)
     conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
     
     n = -1;
-
+    
     query = "SELECT * FROM Admin Where Name = " + '"' + name + '"' + " AND Email = " + '"' + email + '"' + ';';
     data = fetch(conn,query);
     if(isempty(data)) 

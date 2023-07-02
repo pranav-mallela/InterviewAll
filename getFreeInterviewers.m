@@ -1,4 +1,4 @@
-function getFreeInterviewers(name, date) %yyyy-mm-dd
+function err = getFreeInterviewers(name, date) %yyyy-mm-dd
     h = actxserver('Outlook.Application');
     namespace = h.GetNamespace('MAPI');
     calendars = namespace.GetDefaultFolder(9); 
@@ -7,18 +7,27 @@ function getFreeInterviewers(name, date) %yyyy-mm-dd
     
     filteredItems = items.Restrict(['[Start] >= ''' date ' 00:00 AM''' ' AND [End] <= ''' date ' 11:59 PM''']);
     
-    conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
+    try
+        conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
+        
     
+        query = "SELECT * FROM InterviewerHR WHERE Name = " + '"' + name + '"' + ';';
+        data = fetch(conn,query);
+        dept = "HR";
+    catch 
+        err = 1;
+    end 
 
-    query = "SELECT * FROM InterviewerHR WHERE Name = " + '"' + name + '"' + ';';
-    data = fetch(conn,query);
-
-    dept = "HR";
-
+   
     if(isempty(data))
-         query = "SELECT * FROM InterviewerTECH WHERE Name = " + '"' + name + '"' + ';';
-         data = fetch(conn,query);
-         dept = "TECH";
+        try
+             query = "SELECT * FROM InterviewerTECH WHERE Name = " + '"' + name + '"' + ';';
+             data = fetch(conn,query);
+             dept = "TECH";
+        catch 
+            err = 1;
+
+        end 
    
 
          if(isempty(data))
@@ -48,10 +57,15 @@ function getFreeInterviewers(name, date) %yyyy-mm-dd
         disp(he)
 
         endTime = he;
-           
-        query = "INSERT INTO FreeInterviewer" + dept + " VALUES (" +  '"'+name+'"' + ', ' + '"'+ startTime+'"' + ', ' + '"'+ endTime+'"' + ', ' + '"'+ dept+'"' + ");";
+         
+        try 
+            query = "INSERT INTO FreeInterviewer" + dept + " VALUES (" +  '"'+name+'"' + ', ' + '"'+ startTime+'"' + ', ' + '"'+ endTime+'"' + ', ' + '"'+ dept+'"' + ");";
+            
+            exec(conn, query)
+        catch 
+            err = 1;
+        end 
         
-        exec(conn, query)
     end
     
     close(conn)

@@ -1,10 +1,19 @@
 
-function data = getOngoingInterviews(startTime,endTime)
-    conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
-   
-    query = "SELECT * FROM ScheduledInterviews WHERE StartingTime >= " + '"' + startTime + '"' + " AND EndingTime <= "+ '"' + endTime + '"' + ';';
+function [err, data] = getOngoingInterviews(startTime,endTime)
+     
+    err = 0;
+
+    try 
+        conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
+       
+        query = "SELECT * FROM ScheduledInterviews WHERE StartingTime >= " + '"' + startTime + '"' + " AND EndingTime <= "+ '"' + endTime + '"' + ';';
+        
+        data = fetch(conn,query);
+    catch
+        err = 1;
+        data = [];
+    end 
     
-    data = fetch(conn,query);
     close(conn)
     clear conn query
 end 
