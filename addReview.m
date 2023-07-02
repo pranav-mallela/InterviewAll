@@ -18,8 +18,11 @@ function addReview (id, iName, review, status)
     end
 
     query = "INSERT INTO Reviews (StudentID, Round,InterviewerName, Review, Status) VALUES (" +  '"'+id+'"' + ', ' + '"'+ round+'"' + ', ' + '"'+ iName+'"' + ', ' + '"'+ review+'"' + ', '+ '"'+ status+'"' + ");";
-    
     exec(conn,query);
+
+    query = "DELETE FROM ScheduledInterviews WHERE Interviewer = " + '"' + iName + '"' + " AND StudentID = " + '"' + id + '"' + ';';
+    exec(conn,query)
+    
     close(conn)
     clear conn query
 end 
