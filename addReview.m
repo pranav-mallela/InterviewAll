@@ -36,16 +36,16 @@ function err = addReview (id, iName, review, status)
 
     candidateRound = "Round1";
 
-    if(data.Round1 == "Not Completed")
+    if(data.Round1 == "Ongoing")
         candidateRound = "Round1";
-    elseif(data.Round2 == "Not Completed")
+    elseif(data.Round2 == "Ongoing")
         candidateRound = "Round2";
     else 
         candidateRound = "Round3";
     end 
     
     try
-        query = "UPDATE Candidates SET " + '"' + candidateRound + '"' + ' = ' +  '"' + round + '"' + "Status = " + '"' + status + '"' + " WHERE ID = " + '"' + id + '"' + ';';
+        query = "UPDATE Candidates SET " + '"' + candidateRound + '"' + ' = ' +  '"' + round + '"' + ',' + " Status = " + '"' + status + '"' + " WHERE ID = " + '"' + id + '"' + ';';
         exec(conn, query)
     catch 
         err = 1;
