@@ -35,14 +35,14 @@ function err = updateStatus (name,status)
     end 
     
     active = "No";
-    if(Status == "Idle")
+    if(status == "Idle")
         active = "Yes";
     end 
 
     try
         query = "UPDATE FreeInterviewer" + dept + "SET Active = " + '"' + active + '"' + ';';
         exec(conn, query)
-        if(Status == "Idle")
+        if(status == "Idle")
             scheduler()
         end 
     catch 
