@@ -42,6 +42,9 @@ function err = updateStatus (name,status)
     try
         query = "UPDATE FreeInterviewer" + dept + "SET Active = " + '"' + active + '"' + ';';
         exec(conn, query)
+        if(Status == "Idle")
+            scheduler()
+        end 
     catch 
         err = 1;
     end

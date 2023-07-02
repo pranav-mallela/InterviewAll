@@ -36,7 +36,7 @@ function err = getFreeInterviewers(name, date) %yyyy-mm-dd
          end 
     end
 
-    int_startTime = 9000;
+    int_startTime = 900;
 
     for i = 1 : filteredItems.Count
         meeting = filteredItems.Item(i);
@@ -63,10 +63,10 @@ function err = getFreeInterviewers(name, date) %yyyy-mm-dd
         if(int_startTime < startTime)
             if(int_endTime <= 1800)
                 temp = endTime;
-                while(temp - int_startTime >= 1000) 
+                while(temp - int_startTime >= 100) 
                     
-                    freeSlots = [freeSlots, [int_startTime, int_startTime + 1000]]
-                    int_startTime = int_startTime + 1000;
+                    freeSlots = [freeSlots, [int_startTime, int_startTime + 100]]
+                    int_startTime = int_startTime + 100;
                 end 
             end
         end
@@ -87,6 +87,8 @@ function err = getFreeInterviewers(name, date) %yyyy-mm-dd
         int_startTime = endTime;
 
     end
+    
+    scheduler();
     
     close(conn)
     clear conn query

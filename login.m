@@ -1,6 +1,8 @@
-function n = login (name,email)
+function n = login (name,email, password)
     conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
     
+    hashedPassword = DataHash(password);
+
     n = -1;
     
     query = "SELECT * FROM Admin Where Name = " + '"' + name + '"' + " AND Email = " + '"' + email + '"' + ';';
@@ -32,6 +34,14 @@ function n = login (name,email)
     else
         n = 1
     end 
+
+    query = "SELECT * FROM Credentials WHERE Username = " + '"' + name + '"' + ';';
+    data = fetch(conn, query);
+
+    if(data.Password ~= hashedPassword) 
+        n = -2;
+    end
+    
      
     close(conn)
     clear conn query
