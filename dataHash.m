@@ -1,12 +1,12 @@
-function encryptedText = dataHash(text)
+function encryptedText = dataHash(hi)
     
-    shift = 5;
-    
-    asciiValue = text{1};
-    shiftedAsciiValue = asciiValue + shift;
-    
-    encryptedText = char(shiftedAsciiValue);
-      
-    
+    n=double(char(hi));
+    encryptedText = "";
+    for i = 1:strlength(hi)
 
+        encryptedText = encryptedText+int2str(n(i))+5;
+
+    end
+    encryptedText = num2str(encryptedText);
+      
 end

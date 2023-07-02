@@ -1,7 +1,7 @@
 function err = signup (name, department, domain, mailid, password)
     conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
     err = 0;
-    hashedPassword = DataHash(password);
+    hashedPassword = dataHash(password);
 
     defaultStatus = "Idle";
     try

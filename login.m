@@ -1,7 +1,7 @@
 function n = login (name,email, password)
     conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
     
-    hashedPassword = DataHash(password);
+    hashedPassword = dataHash(password);
 
     n = -1;
     
