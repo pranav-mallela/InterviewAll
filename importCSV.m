@@ -8,6 +8,7 @@ function error = importCSV(path)
     end
 
     try
+        disp(path)
         sqlwrite(conn,'Candidates',data)
     catch
         error="Invalid Data Supplied";
@@ -16,5 +17,6 @@ function error = importCSV(path)
     close(conn)
     
     clear conn
+    scheduler();
     
 end
