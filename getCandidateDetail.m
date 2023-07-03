@@ -5,7 +5,7 @@ function [err, data] = getCandidateDetail(name)
     try
         conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
     
-        query = "SELECT Name, ID, Status, Round1, Round2, Round3, Domain, Email FROM Candidates WHERE Name = " + '"' + name + '"' + ';';
+        query = "SELECT Name, ID, Status, Round1, Round2, Round3, Domain, Email FROM Candidates WHERE Name LIKE " + '"%' + name + '%"' + ';';
         
         data = fetch(conn,query);
     catch
