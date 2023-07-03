@@ -14,84 +14,88 @@ function scheduler()
     date=date.Password;
     %class(date)
     
-        % FLAG: also check if the starting time is greater than starting time of
-        % interviewer.
-        % Scheduling Priority - TECH -> HR -> MG
+    % FLAG: also check if the starting time is greater than starting time of
+    % interviewer.
+    % Scheduling Priority - TECH -> HR -> MG
 
-        time=datetime("now","Format","HHmm");
-        time=string(time);
-        time=str2num(time);
-        
-        % Queries to remove slots with ST >= current time
+    time=datetime("now","Format","HHmm");
+    time=string(time);
+    time=str2num(time);
+
+    today=datetime("now","Format","yyyy-MM-dd");
+    today=string(today);
+
+    % Queries to remove slots with ST >= current time
+    if(today==date)
         query = "DELETE FROM FreeInterviewerTECH WHERE StartingTime <=" + '"' + time + '"' + ";";
         exec(conn,query);
         query = "DELETE FROM FreeInterviewerHR WHERE StartingTime <=" + '"' + time + '"' + ";";
         exec(conn,query);
         query = "DELETE FROM FreeInterviewerMG WHERE StartingTime <=" + '"' + time + '"' + ";";
         exec(conn,query);
-        
-        % Extract Free and active Interview slots
-        query = 'SELECT * FROM FreeInterviewerTECH WHERE Active == "Yes" ORDER by StartingTime;';
-    
-        iTech = fetch(conn,query);
+    end
+    % Extract Free and active Interview slots
+    query = 'SELECT * FROM FreeInterviewerTECH WHERE Active == "Yes" ORDER by StartingTime;';
 
-        query = 'SELECT * FROM FreeInterviewerHR  WHERE Active == "Yes" ORDER by StartingTime;';
-    
-        iHR = fetch(conn,query);
+    iTech = fetch(conn,query);
 
-        query = 'SELECT * FROM FreeInterviewerMG WHERE Active == "Yes" ORDER by StartingTime;';
-    
-        iMG = fetch(conn,query);
+    query = 'SELECT * FROM FreeInterviewerHR  WHERE Active == "Yes" ORDER by StartingTime;';
 
-        [rows, ~]=size(Candidates);
+    iHR = fetch(conn,query);
 
-        for i=1:rows
-            if(Candidates.Status(i) =="No Go" || Candidates.Round1(i) == "Ongoing" || Candidates.Round2(i) == "Ongoing" || Candidates.Round3(i) == "Ongoing")
-                continue;
-            end
-            if(~isempty(iTech))
-                if(Candidates.Round1(i) ~= "TECH" && Candidates.Round2(i) ~= "TECH" && Candidates.Round3(i) ~= "TECH")
-                    for interviewer = 1:size(iTech)
-                        interviewerName = iTech.InterviewerName(interviewer);
-                        [~,interviewerDetails] = interviewerDetail(interviewerName, "TECH");
-                        if Candidates.Domain(i) == interviewerDetails.Domain(1)
-                            roundNo = findRound(Candidates(i,:));
-                            scheduleInterview(interviewerName,iTech.StartingTime(interviewer),iTech.EndingTime(interviewer),Candidates.ID(i),roundNo);
-                            [~] = makeAppointmentAndSendMail(Candidates.ID(i),interviewerName,date,iTech.StartingTime(interviewer),iTech.EndingTime(interviewer));
-                            popFreeInterviewer(interviewerName,iTech.StartingTime(interviewer),iTech.Department(interviewer));
-                            iTech(interviewer,:)=[];
-                            break;
-                        end
+    query = 'SELECT * FROM FreeInterviewerMG WHERE Active == "Yes" ORDER by StartingTime;';
+
+    iMG = fetch(conn,query);
+
+    [rows, ~]=size(Candidates);
+
+    for i=1:rows
+        if(Candidates.Status(i) =="No Go" || Candidates.Round1(i) == "Ongoing" || Candidates.Round2(i) == "Ongoing" || Candidates.Round3(i) == "Ongoing")
+            continue;
+        end
+        if(~isempty(iTech))
+            if(Candidates.Round1(i) ~= "TECH" && Candidates.Round2(i) ~= "TECH" && Candidates.Round3(i) ~= "TECH")
+                for interviewer = 1:size(iTech)
+                    interviewerName = iTech.InterviewerName(interviewer);
+                    [~,interviewerDetails] = interviewerDetail(interviewerName, "TECH");
+                    if Candidates.Domain(i) == interviewerDetails.Domain(1)
+                        roundNo = findRound(Candidates(i,:));
+                        scheduleInterview(interviewerName,iTech.StartingTime(interviewer),iTech.EndingTime(interviewer),Candidates.ID(i),roundNo);
+                        [~] = makeAppointmentAndSendMail(Candidates.ID(i),interviewerName,date,iTech.StartingTime(interviewer),iTech.EndingTime(interviewer));
+                        popFreeInterviewer(interviewerName,iTech.StartingTime(interviewer),iTech.Department(interviewer));
+                        iTech(interviewer,:)=[];
+                        break;
                     end
                 end
-               
-               
-            
-            elseif(~isempty(iHR))
-                if(Candidates.Round1(i) ~= "HR" && Candidates.Round2(i) ~= "HR" && Candidates.Round3(i) ~= "HR")
-                    interviewerName = iHR.InterviewerName(1);
-                    roundNo = findRound(Candidates(i,:));
-                    scheduleInterview(interviewerName,iHR.StartingTime(interviewer),iHR.EndingTime(interviewer),Candidates.ID(i),roundNo);
-                    makeAppointmentAndSendMail(Candidates.ID(i),interviewerName,date,iHR.StartingTime(interviewer),iHR.EndingTime(interviewer));
-                    popFreeInterviewer(interviewerName,iHR.StartingTime(interviewer),iHR.Department(interviewer));
-                    iHR(interviewer,:)=[];
-                end
-            elseif(~isempty(iMG))
-                if(Candidates.Round1(i) ~= "MG" && Candidates.Round2(i) ~= "MG" && Candidates.Round3(i) ~= "MG")
-                    interviewerName = iMG.InterviewerName(1);
-                    roundNo = findRound(Candidates(i,:));
-                    scheduleInterview(interviewerName,iMG.StartingTime(interviewer),iMG.EndingTime(interviewer),Candidates.ID(i),roundNo);
-                    makeAppointmentAndSendMail(Candidates.ID(i),interviewerName,date,iMG.StartingTime(interviewer),iMG.EndingTime(interviewer));
-                    popFreeInterviewer(interviewerName,iMG.StartingTime(interviewer),iMG.Department(interviewer));
-                    iMG(interviewer,:)=[];
-                end
-            else
-                break;
             end
+           
+           
+        
+        elseif(~isempty(iHR))
+            if(Candidates.Round1(i) ~= "HR" && Candidates.Round2(i) ~= "HR" && Candidates.Round3(i) ~= "HR")
+                interviewerName = iHR.InterviewerName(1);
+                roundNo = findRound(Candidates(i,:));
+                scheduleInterview(interviewerName,iHR.StartingTime(interviewer),iHR.EndingTime(interviewer),Candidates.ID(i),roundNo);
+                makeAppointmentAndSendMail(Candidates.ID(i),interviewerName,date,iHR.StartingTime(interviewer),iHR.EndingTime(interviewer));
+                popFreeInterviewer(interviewerName,iHR.StartingTime(interviewer),iHR.Department(interviewer));
+                iHR(interviewer,:)=[];
+            end
+        elseif(~isempty(iMG))
+            if(Candidates.Round1(i) ~= "MG" && Candidates.Round2(i) ~= "MG" && Candidates.Round3(i) ~= "MG")
+                interviewerName = iMG.InterviewerName(1);
+                roundNo = findRound(Candidates(i,:));
+                scheduleInterview(interviewerName,iMG.StartingTime(interviewer),iMG.EndingTime(interviewer),Candidates.ID(i),roundNo);
+                makeAppointmentAndSendMail(Candidates.ID(i),interviewerName,date,iMG.StartingTime(interviewer),iMG.EndingTime(interviewer));
+                popFreeInterviewer(interviewerName,iMG.StartingTime(interviewer),iMG.Department(interviewer));
+                iMG(interviewer,:)=[];
+            end
+        else
+            break;
         end
-      
-        close(conn)
-        clear conn query
+    end
+  
+    close(conn)
+    clear conn query
 end
 
 
