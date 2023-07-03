@@ -33,7 +33,7 @@ function err = makeAppointmentAndSendMail (CID, name, date, startTime, endTime)
 
         appointment = out.CreateItem('olAppointmentItem');
 
-        appointment.Subject = 'Your interview with mathworks';
+        appointment.Subject = 'Your Interview with MathWorks';
 
         appointment.Body = "Hello, please find your interview schedule attached on " + date + " from " + s_time + " to " + e_time + ". The interview is tentatively an hour long.";
 
@@ -70,7 +70,7 @@ function err = makeAppointmentAndSendMail (CID, name, date, startTime, endTime)
 
     mail = out.CreateItem('olMail');
 
-    mail.Subject = 'Interview scheduled test';
+    mail.Subject = 'Interview Scheduled';
 
     mail.To = name + '@mathworks.com';
 
