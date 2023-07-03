@@ -37,9 +37,12 @@ function n = login (name, password)
 
     query = "SELECT * FROM Credentials WHERE Username = " + '"' + name + '"' + ';';
     data = fetch(conn, query);
-
-    if(data.Password ~= hashedPassword) 
-        n = -2;
+    try
+        if(data.Password ~= hashedPassword) 
+            n = -2;
+        end
+    catch
+        n=2;
     end
     
      
