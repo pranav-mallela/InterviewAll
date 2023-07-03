@@ -35,16 +35,20 @@ function err = makeAppointmentAndSendMail (CID, name, date, startTime, endTime)
 
         appointment.Subject = 'Your interview with mathworks';
 
-        appointment.Body = "Hello, please find you interview shedule attached on " + date + " from " + s_time + " to " + e_time + ". The interview is tentatively an hour long.";
+        appointment.Body = "Hello, please find your interview schedule attached on " + date + " from " + s_time + " to " + e_time + ". The interview is tentatively an hour long.";
 
         conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
         query = "SELECT * FROM Candidates WHERE ID = " + '"' + CID + '"' + ';';
         data = fetch(conn, query);
         candidateMail = data.Email;
 
-        appointment.Start = date + s_time;
+        temp_s_time = convertStringsToChars(s_time);
+        temp_e_time = convertStringsToChars(e_time);
+        temp_date = convertStringsToChars(date);
 
-        appointment.End = date + e_time;
+        appointment.Start = [temp_date,' ', temp_s_time];
+
+        appointment.End = [temp_date,' ', temp_e_time];
 
         appointment.RequiredAttendees = name + '@mathworks.com';
 
@@ -66,11 +70,11 @@ function err = makeAppointmentAndSendMail (CID, name, date, startTime, endTime)
 
     mail = out.CreateItem('olMail');
 
-    mail.Subject = 'Interview schduled test';
+    mail.Subject = 'Interview scheduled test';
 
     mail.To = name + '@mathworks.com';
 
-    mail.Body = "Hello, please find you interview shedule attached on " + date + " from " + s_time + " to " + e_time + ". The interview is tentatively an hour long.";
+    mail.Body = "Hello, please find your interview schedule attached on " + date + " from " + s_time + " to " + e_time + ". The interview is tentatively an hour long.";
 
     mail.BodyFormat = 'olFormatHTML';
 
