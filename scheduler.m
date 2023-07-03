@@ -48,7 +48,7 @@ function scheduler()
     iMG = fetch(conn,query);
 
     [rows, ~]=size(Candidates);
-
+    interviewer=1;
     for i=1:rows
         if(Candidates.Status(i) =="No Go" || Candidates.Round1(i) == "Ongoing" || Candidates.Round2(i) == "Ongoing" || Candidates.Round3(i) == "Ongoing")
             continue;
@@ -70,7 +70,7 @@ function scheduler()
             end
            
            
-        
+        interviewer=1;
         elseif(~isempty(iHR))
             if(Candidates.Round1(i) ~= "HR" && Candidates.Round2(i) ~= "HR" && Candidates.Round3(i) ~= "HR")
                 interviewerName = iHR.InterviewerName(1);

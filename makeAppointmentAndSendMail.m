@@ -17,10 +17,15 @@ function err = makeAppointmentAndSendMail (CID, name, date, startTime, endTime)
         endTime = "0" + endTime;
 
     end
+    
+    startTime = "" + startTime;
+    endTime = "" + endTime;
 
-    s_time = startTime(1) + startTime(2) + ":" + startTime(3) + startTime(4) + ":00";
+    
 
-    e_time = endTime(1) + endTime(2) + ":" + endTime(3) + endTime(4) + ":00";
+    s_time = extract(startTime, 1) + extract(startTime, 2) + ":" + extract(startTime,3) + extract(startTime,4) + ":00";
+
+    e_time = extract(endTime,1) + extract(endTime,2) + ":" + extract(endTime,3) + extract(endTime,4) + ":00";
 
     candidateMail = "";
 
