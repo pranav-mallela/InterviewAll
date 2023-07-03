@@ -4,11 +4,17 @@ function err= removeAdmin(username)
         conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
         
         
-        query = "DELETE * FROM Admin WHERE Name ==" +'"'+username+'"'+ ";";
+        query = "DELETE FROM Admin WHERE Name ==" +'"'+username+'"'+ ";";
+        disp(query)
+        
         exec(conn,query);
 
-        query = "DELETE * FROM Credentials WHERE Username ==" +'"'+username+'"'+ ";";
+        
+
+        query = "DELETE FROM Credentials WHERE Username ==" +'"'+username+'"'+ ";";
         exec(conn,query)
+
+        disp(query)
 
     catch 
         err = 1;
