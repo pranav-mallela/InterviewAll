@@ -1,23 +1,23 @@
-function n = login (name,email, password)
+function n = login (name, password)
     conn = sqlite('\\mathworks\devel\sandbox\gagarwal\database\InterviewScheduler.db');
     
     hashedPassword = dataHash(password);
 
     n = -1;
     
-    query = "SELECT * FROM Admin Where Name = " + '"' + name + '"' + " AND Email = " + '"' + email + '"' + ';';
+    query = "SELECT * FROM Admin Where Name = " + '"' + name + '"'  + ';';
     data = fetch(conn,query);
     if(isempty(data)) 
 
-        query = "SELECT * FROM InterviewerTECH Where Name = " + '"' + name + '"' + 'AND Email = ' + '"' + email + '"' + ';';
+        query = "SELECT * FROM InterviewerTECH Where Name = " + '"' + name + '"' + ';';
         data = fetch(conn,query);
         if(isempty(data))
             
-            query = "SELECT * FROM InterviewerHR Where Name = " + '"' + name + '"' + 'AND Email = ' + '"' + email + '"' + ';';
+            query = "SELECT * FROM InterviewerHR Where Name = " + '"' + name + '"'  + ';';
             data = fetch(conn,query);
 
             if(isempty(data)) 
-                   query = "SELECT * FROM InterviewerMG Where Name = " + '"' + name + '"' + 'AND Email = ' + '"' + email + '"' + ';';
+                   query = "SELECT * FROM InterviewerMG Where Name = " + '"' + name + '"' +';';
                    data = fetch(conn,query);
                    if(isempty(data))
                        n = -1
