@@ -23,10 +23,10 @@ A MATLAB-based interview scheduler was developed using the app builder and the d
 
 </ul>
 <br>
-<h1>The scheduling algorithm</h1>
+<h1>The Scheduling Algorithm</h1>
 <p>
   Now, at this point the free slots, the interviewers from each department are matched with the domains of the students. These are then scheduled the interviews in the free slots. The scheduler is a function called when:
-  <ul>.
+  <ul>
     <li>Interviewer updates its status</li>
     <li>New candidates are added to the database.</li>
     <li>A new interviewer is added.</li>
